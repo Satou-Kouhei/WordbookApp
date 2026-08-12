@@ -3,6 +3,8 @@ package wordbook.main;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import wordbook.file.WordbookFileManager;
+
 public class WordbookApp {
 
 	public static void main(String[] args) {
@@ -15,11 +17,15 @@ public class WordbookApp {
 			frame.setLocation(100 , 100);
 			
 			// 画面内部のパーツを配置
+			WordbookFileManager wfm = new WordbookFileManager();
+			wfm.loadFiles();
+			wfm.saveFiles();
+			wfm.loadFiles();
 			
 			// 画面を表示
 			frame.setVisible(true);
 		});
-
+		
 	}
 
 }
