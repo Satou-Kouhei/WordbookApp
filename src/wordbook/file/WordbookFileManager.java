@@ -62,7 +62,6 @@ public class WordbookFileManager {
 			index = descriptionEnd;
 		}
 		
-		
 		return wordList;
 	}
 }
