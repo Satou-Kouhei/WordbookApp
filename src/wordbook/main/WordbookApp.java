@@ -22,6 +22,7 @@ import wordbook.file.WordbookFileManager;
 public class WordbookApp {
 	private static int currentIdx;			// ファイルから何行目を読み込むか
 	private static List<Word> wordList;		// 読み込むデータのリスト
+	private static File selectedFile;	// 読み込むファイル
 
 	public static void main(String[] args) {
 		// アプリ用のウィンドウを表示させる
@@ -62,17 +63,9 @@ public class WordbookApp {
 			WordbookFileManager fileManager = new WordbookFileManager();
 			
 			// フォルダからファイルを選択する
-			JFileChooser fileChooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSONファイル(*.json)", "json");
-			fileChooser.setFileFilter(filter);
+			selectedFile = chooseFile(frame);
+			String filePath = selectedFile.getAbsolutePath();
 			
-			fileChooser.setCurrentDirectory(new File("."));
-			int selected = fileChooser.showOpenDialog(frame);
-			
-			if(selected == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = fileChooser.getSelectedFile();
-				String filePath = selectedFile.getAbsolutePath();
-				
 				try {
 					// 選択したファイルからリストを取得して、ウィンドウに表示する
 					wordList = fileManager.loadJson(filePath);
@@ -83,7 +76,6 @@ public class WordbookApp {
 					textArea.setText("無効なファイルが選択されました。「ファイル選択」からファイルを選択し直してください。");
 					e.printStackTrace();
 				}
-			}
 			
 			// ページ移動の動作
 			// 1.前へ
@@ -100,6 +92,23 @@ public class WordbookApp {
 					currentIdx++;
 					updateDisplay(titleLabel, textArea);
 				}
+			});
+			
+			//読み込むファイルを選択しなおす
+			openBtn.addActionListener(e -> {
+				selectedFile = chooseFile(frame);
+				String otherFilePath = selectedFile.getAbsolutePath();
+				currentIdx = 0;
+				
+				try {
+					wordList = fileManager.loadJson(otherFilePath);
+					updateDisplay(titleLabel, textArea);
+					System.out.println("other file");
+				} catch (IOException e1) {
+					// TODO 自動生成された catch ブロック
+					e1.printStackTrace();
+				}
+				
 			});
 			
 			// 画面を表示
@@ -120,6 +129,28 @@ public class WordbookApp {
 		Word currentWord = wordList.get(currentIdx);
 		label.setText(currentWord.getWord());
 		area.setText(currentWord.getDescription());
+	}
+	
+	/**
+	 * フォルダからファイルを選択するメソッド
+	 * @param frame
+	 * @return filePath
+	 */
+	private static File chooseFile(JFrame frame) {
+		// ファイル選択ダイアログを表示
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("JSONファイル(*.json)", "json");
+		fileChooser.setFileFilter(filter);
+		fileChooser.setCurrentDirectory(new File("."));
+		int selected = fileChooser.showOpenDialog(frame);
+		
+		// ファイルが選択されたら、パスを取得する
+		if(selected == JFileChooser.APPROVE_OPTION) {
+			selectedFile = fileChooser.getSelectedFile();
+			
+		}
+		
+		return selectedFile;
 	}
 
 }
