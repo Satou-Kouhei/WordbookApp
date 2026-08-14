@@ -6,12 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,10 +55,12 @@ public class WordbookApp {
 			JButton openBtn = new JButton("ファイル選択");
 			JButton prevBtn = new JButton("前へ");
 			JButton nextBtn = new JButton("次へ");
+			JButton addBtn = new JButton("単語追加");
 			
 			bottomPanel.add(openBtn);
 			bottomPanel.add(prevBtn);
 			bottomPanel.add(nextBtn);
+			bottomPanel.add(addBtn);
 			
 			frame.add(bottomPanel, BorderLayout.SOUTH);
 			
@@ -108,6 +113,33 @@ public class WordbookApp {
 					// TODO 自動生成された catch ブロック
 					e1.printStackTrace();
 				}
+				
+			});
+			
+			// 新しい単語を追加する
+			addBtn.addActionListener(e -> {
+				// パネルを作ってダイアログを表示する
+				// パネルを作る
+				JPanel inputPanel = new JPanel();
+				inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+				
+				// ラベルと入力欄を作る
+				inputPanel.add(new JLabel("単語"));
+				inputPanel.add(new JTextField(20));
+				
+				inputPanel.add(new JLabel("解説"));
+				inputPanel.add(new JTextArea(5, 20));
+				
+				// 追加ボタンを作る
+				JButton add = new JButton("追加");
+				inputPanel.add(add);
+				
+				// ウィンドウを表示する
+				JDialog diarog = new JDialog();
+				diarog.setSize(400, 400);
+				diarog.add(inputPanel);
+				diarog.setModal(true);
+				diarog.setVisible(true);
 				
 			});
 			
