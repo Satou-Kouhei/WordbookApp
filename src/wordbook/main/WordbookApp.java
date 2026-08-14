@@ -2,16 +2,19 @@ package wordbook.main;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import wordbook.file.Word;
 import wordbook.file.WordbookFileManager;
@@ -45,27 +48,41 @@ public class WordbookApp {
 			JPanel bottomPanel = new JPanel();
 			bottomPanel.setLayout(new FlowLayout());
 			
+			JButton openBtn = new JButton("ファイル選択");
 			JButton prevBtn = new JButton("前へ");
 			JButton nextBtn = new JButton("次へ");
 			
+			bottomPanel.add(openBtn);
 			bottomPanel.add(prevBtn);
 			bottomPanel.add(nextBtn);
 			
 			frame.add(bottomPanel, BorderLayout.SOUTH);
 			
-			// JSONファイルを読み込んで、ウィンドウに見出しと解説をセット
+			// フォルダからファイルを選択し、ウィンドウに表示する
 			WordbookFileManager fileManager = new WordbookFileManager();
-			try {
-				// ファイル読み込み
-				wordList = fileManager.loadJson();
+			
+			// フォルダからファイルを選択する
+			JFileChooser fileChooser = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSONファイル(*.json)", "json");
+			fileChooser.setFileFilter(filter);
+			
+			fileChooser.setCurrentDirectory(new File("."));
+			int selected = fileChooser.showOpenDialog(frame);
+			
+			if(selected == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				String filePath = selectedFile.getAbsolutePath();
 				
-				// 表示する見出しと解説をセットする
-				updateDisplay(titleLabel, textArea);
-				
-			} catch (IOException e) {
-				titleLabel.setText("エラー");
-				textArea.setText("JSONファイルの読み取り失敗");
-				e.printStackTrace();
+				try {
+					// 選択したファイルからリストを取得して、ウィンドウに表示する
+					wordList = fileManager.loadJson(filePath);
+					updateDisplay(titleLabel, textArea);
+					
+				} catch (IOException e) {
+					titleLabel.setText("選択したファイルは" + selectedFile.getName());
+					textArea.setText("無効なファイルが選択されました。「ファイル選択」からファイルを選択し直してください。");
+					e.printStackTrace();
+				}
 			}
 			
 			// ページ移動の動作
