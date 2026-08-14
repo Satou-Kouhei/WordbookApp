@@ -33,9 +33,9 @@ public class WordbookFileManager {
 	}
 	
 	// JSONを読み込む
-	public List<Word> loadJson() throws IOException {
-		// 読み込むファイルを指定 // TODO refactor: ファイル名を引数から指定するように変更予定。
-		String json = Files.readString(Paths.get("demo.json"));
+	public List<Word> loadJson(String filePath) throws IOException {
+		// 読み込むファイルを指定
+		String json = Files.readString(Paths.get(filePath));
 		
 		// 読み込むdataの入れ物を作る
 		List<Word> wordList = new ArrayList<>();
