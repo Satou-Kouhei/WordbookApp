@@ -159,7 +159,7 @@ public class WordbookApp {
 					// JSONファイルに書き込み
 					try {
 						// 書き込みしたら、updateDisplayしてダイアログを消す
-						fileManager.saveJson(wordList);
+						fileManager.saveJson(filePath, wordList);
 						updateDisplay(titleLabel, textArea);
 						
 						diarog.dispose();
