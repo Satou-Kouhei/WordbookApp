@@ -79,9 +79,9 @@ public class WordbookFileManager {
 			Word data = wordList.get(i);
 			updateWordList
 				.append("	{")
-				.append("\"word\" : ")
+				.append("\"word\": ")
 				.append("\"").append(data.getWord()).append( "\", ")
-				.append("\"description\" : ")
+				.append("\"description\": ")
 				.append("\"").append(data.getDescription()).append("\"")
 				.append("}");
 			
