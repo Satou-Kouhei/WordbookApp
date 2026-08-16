@@ -64,4 +64,42 @@ public class WordbookFileManager {
 		
 		return wordList;
 	}
+	
+	public void saveJson(String pathString, List<Word> wordList) throws IOException {
+		// wordListを受け取って、JSONファイルに書き込む
+		// StringBuilderを使って文字列を結合する
+		StringBuilder updateWordList = new StringBuilder();
+		
+		// 追加する文字列を作っていく
+		// JSONのはじまりの"["
+		updateWordList.append("[").append(System.lineSeparator());
+		
+		// 1行ずつ内容を取得し、結合する
+		for(int i = 0; i < wordList.size(); i++) {
+			Word data = wordList.get(i);
+			updateWordList
+				.append("	{")
+				.append("\"word\" : ")
+				.append("\"").append(data.getWord()).append( "\", ")
+				.append("\"description\" : ")
+				.append("\"").append(data.getDescription()).append("\"")
+				.append("}");
+			
+			if(i < wordList.size() - 1) {
+				// カンマをつける
+				updateWordList.append(",").append(System.lineSeparator());
+			} else {
+				// 最後はカンマをつけない
+				updateWordList.append(System.lineSeparator());
+			}
+		}
+		
+		// JSONの終わりの"]"
+		updateWordList.append("]");
+		
+		
+		// ファイルを上書きする
+		Path filePath = Paths.get(pathString);
+		Files.writeString(filePath, updateWordList.toString());
+	}
 }
