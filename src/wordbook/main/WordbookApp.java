@@ -32,7 +32,7 @@ public class WordbookApp {
 		SwingUtilities.invokeLater(() -> {
 			// 表示する画面の設定
 			JFrame frame = new JFrame("Wordbook App");
-			frame.setSize(400, 400);
+			frame.setSize(600, 400);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocation(100 , 100);
 			frame.setLayout(new BorderLayout());
@@ -56,11 +56,13 @@ public class WordbookApp {
 			JButton prevBtn = new JButton("前へ");
 			JButton nextBtn = new JButton("次へ");
 			JButton addBtn = new JButton("単語追加");
+			JButton createBtn = new JButton("新規ファイル作成");
 			
 			bottomPanel.add(openBtn);
 			bottomPanel.add(prevBtn);
 			bottomPanel.add(nextBtn);
 			bottomPanel.add(addBtn);
+			bottomPanel.add(createBtn);
 			
 			frame.add(bottomPanel, BorderLayout.SOUTH);
 			
