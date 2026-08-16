@@ -117,28 +117,61 @@ public class WordbookApp {
 			});
 			
 			// 新しい単語を追加する
-			addBtn.addActionListener(e -> {
+			addBtn.addActionListener(showDiarog -> {
 				// パネルを作ってダイアログを表示する
 				// パネルを作る
 				JPanel inputPanel = new JPanel();
 				inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 				
-				// ラベルと入力欄を作る
-				inputPanel.add(new JLabel("単語"));
-				inputPanel.add(new JTextField(20));
-				
-				inputPanel.add(new JLabel("解説"));
-				inputPanel.add(new JTextArea(5, 20));
-				
-				// 追加ボタンを作る
-				JButton add = new JButton("追加");
-				inputPanel.add(add);
-				
-				// ウィンドウを表示する
+				// ダイアログを作成する
 				JDialog diarog = new JDialog();
 				diarog.setSize(400, 400);
 				diarog.add(inputPanel);
 				diarog.setModal(true);
+				
+				// ラベルと入力欄を作る
+				inputPanel.add(new JLabel("単語", SwingConstants.CENTER));
+				JTextField newWord = new JTextField(20);
+				inputPanel.add(newWord);
+				
+				inputPanel.add(new JLabel("解説", SwingConstants.CENTER));
+				JTextArea newDescription = new JTextArea(5, 20);
+				newDescription.setLineWrap(true);
+				inputPanel.add(newDescription);
+				
+				// 追加ボタンを作る
+				JButton addWord = new JButton("追加");
+				inputPanel.add(addWord);
+				
+				// 追加したい単語をファイルに書き込む
+				addWord.addActionListener(add -> {
+					// 新しい単語と解説を取得
+					String wordText = newWord.getText();
+					String descriptionText = newDescription.getText();
+					
+					// Word型のデータにして、ファイルの末尾に追加
+					Word newData = new Word(wordText, descriptionText);
+					wordList.add(newData);
+					for(Word word : wordList) {
+						System.out.println(word.getWord() + " : " + word.getDescription());
+					}
+					
+					// JSONファイルに書き込み
+					try {
+						// 書き込みしたら、updateDisplayしてダイアログを消す
+						fileManager.saveJson(wordList);
+						updateDisplay(titleLabel, textArea);
+						
+						diarog.dispose();
+						
+					} catch (IOException e1) {
+						// TODO 自動生成された catch ブロック
+						e1.printStackTrace();
+					}
+					
+				});
+				
+				// ダイアログを表示する
 				diarog.setVisible(true);
 				
 			});
