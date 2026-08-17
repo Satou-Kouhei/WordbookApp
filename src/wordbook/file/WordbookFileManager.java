@@ -103,7 +103,7 @@ public class WordbookFileManager {
 		Files.writeString(filePath, updateWordList.toString());
 	}
 	
-	public void createNewFile(String inputFileName) throws IOException {
+	public String createNewFile(String inputFileName) throws IOException {
 		// 作成するファイル名を受け取って、新ファイルを作成する
 		Path currentPath = Paths.get(".");		// 注意：これは相対パス
 		String newFileName = inputFileName + ".json";
@@ -115,5 +115,8 @@ public class WordbookFileManager {
 		} else {
 			Files.createFile(fullPath);
 		}
+		
+		String pathString = fullPath.toAbsolutePath().toString();
+		return pathString;
 	}
 }
