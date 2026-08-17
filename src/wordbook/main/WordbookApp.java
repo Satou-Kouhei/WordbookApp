@@ -206,12 +206,17 @@ public class WordbookApp {
 					// ファイル作成
 					try {
 						// ファイルを作成して、ダイアログを閉じる
-						fileManager.createNewFile(newFileName);
+						String newFilePath = fileManager.createNewFile(newFileName);
 						createDialog.dispose();
 						
-					} catch (IOException e1) {
-						// TODO 自動生成された catch ブロック
-						e1.printStackTrace();
+						// 作成したフォルダを開く
+						currentIdx = 0;
+						wordList.clear();
+						wordList = fileManager.loadJson(newFilePath);
+						updateDisplay(titleLabel, textArea);
+					} catch (Exception fileCreateError) {
+						
+						fileCreateError.printStackTrace();
 					}
 				});
 				
@@ -230,7 +235,11 @@ public class WordbookApp {
 	 */
 	private static void updateDisplay(JLabel label, JTextArea area) {
 		// wordListがなければ早期リターンする
-		if(wordList == null || wordList.isEmpty()) return;
+		if(wordList == null || wordList.isEmpty()) {
+			label.setText("単語未登録");
+			area.setText("まだ単語が登録されていません。単語登録から登録してください。");
+			return;
+		}
 		
 		// 見出しと解説をセットする
 		Word currentWord = wordList.get(currentIdx);
