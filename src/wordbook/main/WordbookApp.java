@@ -178,6 +178,46 @@ public class WordbookApp {
 				
 			});
 			
+			// 新しいファイルを作成する
+			createBtn.addActionListener(showCreate -> {
+				// パネルを作ってダイアログを表示する
+				JPanel createPanel = new JPanel();
+				createPanel.setLayout(new BoxLayout(createPanel, BoxLayout.Y_AXIS));
+				
+				JDialog createDialog = new JDialog();
+				createDialog.setSize(400,400);
+				createDialog.add(createPanel);
+				createDialog.setModal(true);
+				
+				// ラベルと入力欄を作成する
+				createPanel.add(new JLabel("新規ファイル名", SwingConstants.CENTER));
+				JTextField newNameField = new JTextField(20);
+				createPanel.add(newNameField);
+				
+				// 作成ボタンを作る
+				JButton createFile = new JButton("作成");
+				createPanel.add(createFile);
+				
+				// 新しいファイルを作成
+				createFile.addActionListener(create -> {
+					// ファイル名を取得して、ファイルを作る
+					String newFileName = newNameField.getText();
+					
+					// ファイル作成
+					try {
+						// ファイルを作成して、ダイアログを閉じる
+						fileManager.createNewFile(newFileName);
+						createDialog.dispose();
+						
+					} catch (IOException e1) {
+						// TODO 自動生成された catch ブロック
+						e1.printStackTrace();
+					}
+				});
+				
+				createDialog.setVisible(true);
+			});
+			
 			// 画面を表示
 			frame.setVisible(true);
 		});
