@@ -207,13 +207,13 @@ public class WordbookApp {
 					// ファイル作成
 					try {
 						// ファイルを作成して、ダイアログを閉じる
-						String newFilePath = fileManager.createNewFile(newFileName);
+						filePath = fileManager.createNewFile(newFileName);
 						createDialog.dispose();
 						
 						// 作成したフォルダを開く
 						currentIdx = 0;
 						wordList.clear();
-						wordList = fileManager.loadJson(newFilePath);
+						wordList = fileManager.loadJson(filePath);
 						updateDisplay(titleLabel, textArea);
 					} catch (Exception fileCreateError) {
 						
