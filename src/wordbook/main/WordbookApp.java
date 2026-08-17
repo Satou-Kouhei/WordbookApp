@@ -25,7 +25,8 @@ import wordbook.file.WordbookFileManager;
 public class WordbookApp {
 	private static int currentIdx;			// ファイルから何行目を読み込むか
 	private static List<Word> wordList;		// 読み込むデータのリスト
-	private static File selectedFile;	// 読み込むファイル
+	private static File selectedFile;		// 読み込むファイル
+	private static String filePath;			// ファイルパスの文字列
 
 	public static void main(String[] args) {
 		// アプリ用のウィンドウを表示させる
@@ -69,7 +70,7 @@ public class WordbookApp {
 			
 			// フォルダからファイルを選択する
 			selectedFile = chooseFile(frame);
-			String filePath = selectedFile.getAbsolutePath();
+			filePath = selectedFile.getAbsolutePath();
 			
 				try {
 					// 選択したファイルからリストを取得して、ウィンドウに表示する
@@ -102,11 +103,11 @@ public class WordbookApp {
 			//読み込むファイルを選択しなおす
 			openBtn.addActionListener(e -> {
 				selectedFile = chooseFile(frame);
-				String otherFilePath = selectedFile.getAbsolutePath();
+				filePath = selectedFile.getAbsolutePath();
 				currentIdx = 0;
 				
 				try {
-					wordList = fileManager.loadJson(otherFilePath);
+					wordList = fileManager.loadJson(filePath);
 					updateDisplay(titleLabel, textArea);
 					System.out.println("other file");
 				} catch (IOException e1) {
