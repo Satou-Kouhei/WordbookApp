@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -195,6 +197,21 @@ public class WordbookApp {
 				JTextField newNameField = new JTextField(20);
 				createPanel.add(newNameField);
 				
+				// 保存するフォルダを選択
+				JRadioButton defaultSelected = new JRadioButton("現在のフォルダに作成");
+				JRadioButton optionalSelected = new JRadioButton("選択したフォルダに作成");
+				
+				// デフォルトの選択を、現在のフォルダにしておく
+				defaultSelected.setSelected(true);
+				
+				// ボタンをグループ化
+				ButtonGroup buttons = new ButtonGroup();
+				buttons.add(defaultSelected);
+				buttons.add(optionalSelected);
+				
+				createPanel.add(defaultSelected);
+				createPanel.add(optionalSelected);
+				
 				// 作成ボタンを作る
 				JButton createFile = new JButton("作成");
 				createPanel.add(createFile);
@@ -210,7 +227,7 @@ public class WordbookApp {
 						filePath = fileManager.createNewFile(newFileName);
 						createDialog.dispose();
 						
-						// 作成したフォルダを開く
+						// 作成したファイルを開く
 						currentIdx = 0;
 						wordList.clear();
 						wordList = fileManager.loadJson(filePath);
