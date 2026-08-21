@@ -35,7 +35,7 @@ public class WordbookApp {
 		SwingUtilities.invokeLater(() -> {
 			// 表示する画面の設定
 			JFrame frame = new JFrame("Wordbook App");
-			frame.setSize(600, 400);
+			frame.setSize(800, 400);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocation(100 , 100);
 			frame.setLayout(new BorderLayout());
@@ -60,12 +60,14 @@ public class WordbookApp {
 			JButton nextBtn = new JButton("次へ");
 			JButton addBtn = new JButton("単語追加");
 			JButton createBtn = new JButton("新規ファイル作成");
+			JButton modifyBtn = new JButton("この単語を修正");
 			
 			bottomPanel.add(openBtn);
 			bottomPanel.add(prevBtn);
 			bottomPanel.add(nextBtn);
 			bottomPanel.add(addBtn);
 			bottomPanel.add(createBtn);
+			bottomPanel.add(modifyBtn);
 			
 			frame.add(bottomPanel, BorderLayout.SOUTH);
 			
@@ -253,6 +255,36 @@ public class WordbookApp {
 				});
 				
 				createDialog.setVisible(true);
+			});
+			
+			modifyBtn.addActionListener(showModifyDialog -> {
+				// パネルを作成して、ダイアログを表示する
+				JPanel modifyPanel = new JPanel();
+				modifyPanel.setLayout(new BoxLayout(modifyPanel, BoxLayout.Y_AXIS));
+				
+				JDialog modifyDialog = new JDialog();
+				modifyDialog.setSize(400, 400);
+				modifyDialog.add(modifyPanel);
+				modifyDialog.setModal(true);
+				
+				// ラベルと入力欄を作成
+				modifyPanel.add(new JLabel("修正後の見出", SwingConstants.CENTER));
+				JTextField modifiedTitle = new JTextField(20); 
+				modifyPanel.add(modifiedTitle);
+				
+				modifyPanel.add(new JLabel("修正後の内容", SwingConstants.CENTER));
+				JTextArea modifiedDescription = new JTextArea(5, 20);
+				modifyPanel.add(modifiedDescription);
+				
+				// 確定ボタンを作る
+				JButton modifyWord = new JButton("確定");
+				modifyPanel.add(modifyWord);
+				
+				modifyWord.addActionListener(modify -> {
+					modifyDialog.dispose();
+				});
+				
+				modifyDialog.setVisible(true);
 			});
 			
 			// 画面を表示
