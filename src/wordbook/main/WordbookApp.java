@@ -224,7 +224,20 @@ public class WordbookApp {
 					// ファイル作成
 					try {
 						// ファイルを作成して、ダイアログを閉じる
-						filePath = fileManager.createNewFile(newFileName);
+						String folderPath = "";
+						if(defaultSelected.isSelected()) {
+							// 現在のフォルダを選択したとき
+							filePath = fileManager.createNewFile(folderPath, newFileName);
+						} else if(optionalSelected.isSelected()) {
+							// フォルダを選択するとき;
+							JFileChooser optional = new JFileChooser();
+							optional.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+							int selected = optional.showOpenDialog(frame);
+							if(selected == JFileChooser.APPROVE_OPTION) {
+								folderPath = optional.getSelectedFile().toString();
+							}
+							filePath = fileManager.createNewFile(folderPath, newFileName);
+						}
 						createDialog.dispose();
 						
 						// 作成したファイルを開く
