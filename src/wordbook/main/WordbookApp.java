@@ -280,7 +280,31 @@ public class WordbookApp {
 				JButton modifyWord = new JButton("確定");
 				modifyPanel.add(modifyWord);
 				
+				// 現在の単語の見出しと解説を入力欄の初期値としてセットする
+				Word nowWord = wordList.get(currentIdx);
+				String nowTitle = nowWord.getWord();
+				String nowDescription = nowWord.getDescription();
+				
+				modifiedTitle.setText(nowTitle);
+				modifiedDescription.setText(nowDescription);
+				
 				modifyWord.addActionListener(modify -> {
+					// 修正する内容をWord型にする
+					String newTitle = modifiedTitle.getText();
+					String newDescription = modifiedDescription.getText();
+					Word modifidWord = new Word(newTitle, newDescription);
+					
+					// 修正内容をセットする
+					wordList.set(currentIdx, modifidWord);
+					try {
+						fileManager.saveJson(filePath, wordList);
+						updateDisplay(titleLabel, textArea);
+					} catch (IOException e1) {
+						// TODO 自動生成された catch ブロック
+						e1.printStackTrace();
+					}
+					
+					// ダイアログを閉じる
 					modifyDialog.dispose();
 				});
 				
