@@ -220,6 +220,7 @@ public class WordbookApp {
 				createFile.addActionListener(create -> {
 					// ファイル名を取得して、ファイルを作る
 					String newFileName = newNameField.getText();
+					if(newFileName.isEmpty()) return;	// ファイル名が入力されなかったら早期リターン // TODO: バリデーションに置き換え予定
 					
 					// ファイル作成
 					try {
